@@ -12,11 +12,18 @@ for ($i = 0; $i < count($funciones); $i++) {
     $codigo = $codigos[$i];
     $completado = isset($completados[$i]) ? 1 : 0;
     $tiempo = intval($tiempos[$i]);
-    $obs = $conn->real_escape_string($observaciones[$i]);
+    $obs = $observaciones[$i];
 
-    $conn->query("INSERT INTO resultados (funcion, codigo, completado, tiempo, observaciones)
-                  VALUES ('$funcion ($codigo)', '$codigo', $completado, $tiempo, '$obs')");
+    $stmt = $conn->prepare("INSERT INTO resultados (funcion, codigo, completado, tiempo, observaciones)
+                            VALUES (:funcion, :codigo, :completado, :tiempo, :observaciones)");
+    $stmt->execute([
+        ':funcion' => "$funcion ($codigo)",
+        ':codigo' => $codigo,
+        ':completado' => $completado,
+        ':tiempo' => $tiempo,
+        ':observaciones' => $obs
+    ]);
 }
 
-echo "Datos guardados correctamente. <a href='index.php'>Volver</a>";
+echo "✅ Datos guardados correctamente. <a href='index.php'>Volver</a>";
 ?>

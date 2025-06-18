@@ -9,11 +9,12 @@
     <h2>Estadísticas de Funciones Evaluadas</h2>
     <canvas id="chart" width="700" height="400"></canvas>
     <?php
-    $datos = $conn->query("SELECT funcion, COUNT(*) as total, SUM(completado) as exitosas FROM resultados GROUP BY funcion");
+    $stmt = $conn->query("SELECT funcion, COUNT(*) as total, SUM(completado::int) as exitosas FROM resultados GROUP BY funcion");
+    $datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $labels = [];
     $exitos = [];
 
-    while ($row = $datos->fetch_assoc()) {
+    foreach ($datos as $row) {
         $labels[] = $row['funcion'];
         $exitos[] = $row['exitosas'];
     }
