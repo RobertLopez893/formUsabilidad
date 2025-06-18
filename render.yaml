@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: encuesta-usabilidad
+    env: docker
+    plan: free
+    autoDeploy: true
